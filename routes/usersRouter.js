@@ -16,21 +16,17 @@ const service = new UsersService();
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated id of the user
+ *           description: ID autogenerado por MongoDB
  *         name:
  *           type: string
- *           description: The name of the user
+ *           description: Nombre del usuario
  *         email:
  *           type: string
- *           description: The email of the user
- *         password:
- *           type: string
- *           description: The password of the user
+ *           description: Correo único
  *         role:
  *           type: string
  *           enum: [admin, technician, viewer]
- *           default: viewer
- *           description: The role of the user
+ *           description: Rol del usuario
  *       example:
  *         name: Juan Perez
  *         email: juan@example.com
@@ -41,27 +37,73 @@ const service = new UsersService();
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: Gestión de usuarios
+ *   - name: Users
+ *     description: API para gestión de usuarios
  */
 
 /**
  * @swagger
  * /api/users:
  *   get:
- *     summary: Returns the list of all the users
+ *     summary: Obtener todos los usuarios
  *     tags: [Users]
  *     responses:
  *       200:
- *         description: The list of the users
+ *         description: Lista de usuarios
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ */
+router.get('/', async (req, res, next) => {
+    try {
+        const users = await service.getAll();
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: Obtener un usuario por ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Detalle del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get('/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await service.getById(id);
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /api/users:
  *   post:
- *     summary: Create a new user
+ *     summary: Crear un nuevo usuario
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -71,46 +113,25 @@ const service = new UsersService();
  *             $ref: '#/components/schemas/User'
  *     responses:
  *       201:
- *         description: The user was successfully created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       500:
- *         description: Some server error
+ *         description: Usuario creado exitosamente
+ *       409:
+ *         description: El email ya existe
  */
-router.get('/', async (req, res, next) => {
-    try { res.json(await service.getAll()); } catch (e) { next(e); }
-});
-
 router.post('/', async (req, res, next) => {
-    try { res.status(201).json(await service.create(req.body)); } catch (e) { next(e); }
+    try {
+        const body = req.body;
+        const newUser = await service.create(body);
+        res.status(201).json(newUser);
+    } catch (error) {
+        next(error);
+    }
 });
 
 /**
  * @swagger
  * /api/users/{id}:
- *   get:
- *     summary: Get the user by id
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The user id
- *     responses:
- *       200:
- *         description: The user description by id
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: The user was not found
  *   patch:
- *     summary: Update the user by the id
+ *     summary: Actualizar un usuario existente
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -118,7 +139,7 @@ router.post('/', async (req, res, next) => {
  *         schema:
  *           type: string
  *         required: true
- *         description: The user id
+ *         description: ID del usuario
  *     requestBody:
  *       required: true
  *       content:
@@ -127,17 +148,26 @@ router.post('/', async (req, res, next) => {
  *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
- *         description: The user was updated
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
+ *         description: Usuario actualizado
  *       404:
- *         description: The user was not found
- *       500:
- *         description: Some error happened
+ *         description: Usuario no encontrado
+ */
+router.patch('/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const body = req.body;
+        const user = await service.update(id, body);
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /api/users/{id}:
  *   delete:
- *     summary: Remove the user by id
+ *     summary: Eliminar un usuario
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -145,23 +175,21 @@ router.post('/', async (req, res, next) => {
  *         schema:
  *           type: string
  *         required: true
- *         description: The user id
+ *         description: ID del usuario
  *     responses:
  *       200:
- *         description: The user was deleted
- *       404:
- *         description: The user was not found
+ *         description: Usuario eliminado
+ *       409:
+ *         description: No se puede eliminar (tiene dispositivos asociados)
  */
-router.get('/:id', async (req, res, next) => {
-    try { res.json(await service.getById(req.params.id)); } catch (e) { next(e); }
-});
-
-router.patch('/:id', async (req, res, next) => {
-    try { res.json(await service.update(req.params.id, req.body)); } catch (e) { next(e); }
-});
-
 router.delete('/:id', async (req, res, next) => {
-    try { res.json(await service.delete(req.params.id)); } catch (e) { next(e); }
+    try {
+        const { id } = req.params;
+        const rta = await service.delete(id);
+        res.json(rta);
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = router;

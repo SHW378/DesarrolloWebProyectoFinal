@@ -5,7 +5,7 @@ const usersRouter = require('./usersRouter');
 const zonesRouter = require('./zonesRouter');
 const devicesRouter = require('./devicesRouter');
 const sensorsRouter = require('./sensorsRouter');
-const readingsRouter = require('./readingsRouter');
+const readingsRouter = require('./readingRouter');
 
 function routerApi(app) {
     const router = express.Router();
