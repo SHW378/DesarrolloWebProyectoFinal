@@ -59,7 +59,9 @@ const service = new SensorsService();
  *                 $ref: '#/components/schemas/Sensor'
  */
 router.get('/', async (req, res, next) => {
-    try { res.json(await service.getAll()); } catch (e) { next(e); }
+    try {
+        res.json(await service.getAll());
+    } catch (e) { next(e); }
 });
 
 /**
@@ -83,7 +85,9 @@ router.get('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Sensor'
  */
 router.get('/:id', async (req, res, next) => {
-    try { res.json(await service.getById(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.getById(req.params.id));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -103,7 +107,9 @@ router.get('/:id', async (req, res, next) => {
  *         description: Sensor creado
  */
 router.post('/', async (req, res, next) => {
-    try { res.status(201).json(await service.create(req.body)); } catch (e) { next(e); }
+    try {
+        res.status(201).json(await service.create(req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -128,7 +134,9 @@ router.post('/', async (req, res, next) => {
  *         description: Sensor actualizado
  */
 router.patch('/:id', async (req, res, next) => {
-    try { res.json(await service.update(req.params.id, req.body)); } catch (e) { next(e); }
+    try {
+        res.json(await service.update(req.params.id, req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -150,7 +158,9 @@ router.patch('/:id', async (req, res, next) => {
  *         description: No se puede eliminar (tiene lecturas registradas)
  */
 router.delete('/:id', async (req, res, next) => {
-    try { res.json(await service.delete(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.delete(req.params.id));
+    } catch (e) { next(e); }
 });
 
 module.exports = router;

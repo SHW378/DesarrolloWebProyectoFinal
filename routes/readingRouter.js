@@ -53,7 +53,9 @@ const service = new ReadingsService();
  *                 $ref: '#/components/schemas/Reading'
  */
 router.get('/', async (req, res, next) => {
-    try { res.json(await service.getAll()); } catch (e) { next(e); }
+    try {
+        res.json(await service.getAll());
+    } catch (e) { next(e); }
 });
 
 /**
@@ -77,7 +79,9 @@ router.get('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Reading'
  */
 router.get('/:id', async (req, res, next) => {
-    try { res.json(await service.getById(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.getById(req.params.id));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -99,7 +103,9 @@ router.get('/:id', async (req, res, next) => {
  *         description: Sensor no encontrado
  */
 router.post('/', async (req, res, next) => {
-    try { res.status(201).json(await service.create(req.body)); } catch (e) { next(e); }
+    try {
+        res.status(201).json(await service.create(req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -124,7 +130,9 @@ router.post('/', async (req, res, next) => {
  *         description: Lectura corregida
  */
 router.patch('/:id', async (req, res, next) => {
-    try { res.json(await service.update(req.params.id, req.body)); } catch (e) { next(e); }
+    try {
+        res.json(await service.update(req.params.id, req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -144,7 +152,9 @@ router.patch('/:id', async (req, res, next) => {
  *         description: Lectura eliminada
  */
 router.delete('/:id', async (req, res, next) => {
-    try { res.json(await service.delete(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.delete(req.params.id));
+    } catch (e) { next(e); }
 });
 
 module.exports = router;

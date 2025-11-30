@@ -51,7 +51,9 @@ const service = new ZonesService();
  *                 $ref: '#/components/schemas/Zone'
  */
 router.get('/', async (req, res, next) => {
-    try { res.json(await service.getAll()); } catch (e) { next(e); }
+    try {
+        res.json(await service.getAll());
+    } catch (e) { next(e); }
 });
 
 /**
@@ -75,7 +77,9 @@ router.get('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Zone'
  */
 router.get('/:id', async (req, res, next) => {
-    try { res.json(await service.getById(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.getById(req.params.id));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -95,7 +99,9 @@ router.get('/:id', async (req, res, next) => {
  *         description: Zona creada exitosamente
  */
 router.post('/', async (req, res, next) => {
-    try { res.status(201).json(await service.create(req.body)); } catch (e) { next(e); }
+    try {
+        res.status(201).json(await service.create(req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -120,7 +126,9 @@ router.post('/', async (req, res, next) => {
  *         description: Zona actualizada
  */
 router.patch('/:id', async (req, res, next) => {
-    try { res.json(await service.update(req.params.id, req.body)); } catch (e) { next(e); }
+    try {
+        res.json(await service.update(req.params.id, req.body));
+    } catch (e) { next(e); }
 });
 
 /**
@@ -142,7 +150,9 @@ router.patch('/:id', async (req, res, next) => {
  *         description: No se puede eliminar (tiene dispositivos asociados)
  */
 router.delete('/:id', async (req, res, next) => {
-    try { res.json(await service.delete(req.params.id)); } catch (e) { next(e); }
+    try {
+        res.json(await service.delete(req.params.id));
+    } catch (e) { next(e); }
 });
 
 module.exports = router;
