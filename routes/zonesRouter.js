@@ -52,6 +52,7 @@ const service = new ZonesService();
  */
 router.get('/', async (req, res, next) => {
     try {
+        // Obtener todas las zonas
         res.json(await service.getAll());
     } catch (e) { next(e); }
 });
@@ -78,6 +79,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get('/:id', async (req, res, next) => {
     try {
+        // Obtener zona por ID
         res.json(await service.getById(req.params.id));
     } catch (e) { next(e); }
 });
@@ -100,6 +102,7 @@ router.get('/:id', async (req, res, next) => {
  */
 router.post('/', async (req, res, next) => {
     try {
+        // Crear nueva zona
         res.status(201).json(await service.create(req.body));
     } catch (e) { next(e); }
 });
@@ -127,6 +130,7 @@ router.post('/', async (req, res, next) => {
  */
 router.patch('/:id', async (req, res, next) => {
     try {
+        // Actualizar zona
         res.json(await service.update(req.params.id, req.body));
     } catch (e) { next(e); }
 });
@@ -151,6 +155,7 @@ router.patch('/:id', async (req, res, next) => {
  */
 router.delete('/:id', async (req, res, next) => {
     try {
+        // Eliminar zona
         res.json(await service.delete(req.params.id));
     } catch (e) { next(e); }
 });
