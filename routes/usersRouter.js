@@ -31,7 +31,7 @@ const service = new UsersService();
  *         name: Victor
  *         email: victor@example.com
  *         password: 123456
- *         role: SoftwareEngineer
+ *         role: technician
  */
 
 /**
