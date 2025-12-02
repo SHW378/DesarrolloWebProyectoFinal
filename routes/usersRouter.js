@@ -28,10 +28,10 @@ const service = new UsersService();
  *           enum: [admin, technician, viewer]
  *           description: Rol del usuario
  *       example:
- *         name: Juan Perez
- *         email: juan@example.com
- *         password: secretPassword123
- *         role: technician
+ *         name: Victor
+ *         email: victor@example.com
+ *         password: 123456
+ *         role: SoftwareEngineer
  */
 
 /**
